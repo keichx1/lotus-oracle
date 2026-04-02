@@ -1,0 +1,329 @@
+/* ============================================================
+   LOTUS V.2 — Global Styles
+   Production-Ready | Refactored per Design Spec
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Sarabun:wght@300;400;500&display=swap');
+
+/* ---------- CSS Variables ---------- */
+:root {
+  --green-dark:    #1A3D2B;
+  --green-mid:     #2D6A4F;
+  --green-btn:     #2A5C3F;
+  --gold:          #C9A84C;
+  --cream:         #F5F0E8;
+  --text-dark:     #1C1C1C;
+  --text-muted:    #5A5A5A;
+  --white:         #FFFFFF;
+  --radius-btn:    4px;           /* Global button radius — 4px per spec */
+  --shadow-soft:   0 4px 24px rgba(0,0,0,0.10);
+  --shadow-card:   0 8px 40px rgba(0,0,0,0.15);
+}
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  font-family: 'Sarabun', sans-serif;
+  background-color: var(--cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* Global Texture Background */
+body {
+  background-image: url('../assets/Texture.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* ---------- App Shell ---------- */
+#app {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* ---------- Pages ---------- */
+.page {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1),
+              transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  transform: translateY(24px);
+  will-change: opacity, transform;
+}
+
+.page.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+  position: relative;
+}
+
+.page.exit {
+  opacity: 0;
+  transform: translateY(-24px);
+  pointer-events: none;
+}
+
+/* ---------- Landing Page ---------- */
+#landing-page {
+  gap: 28px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.landing-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 8vw, 2.8rem);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--green-dark);
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+/* Card wrapper — shows either <img> or SVG fallback */
+.landing-card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  background: #1A3D2B;
+}
+
+.landing-card-wrapper img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+/* SVG fallback: visible by default, hidden when img loads */
+.landing-card-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Hide SVG when real image loads successfully */
+.landing-card-wrapper img:not([style*="display:none"]) + .landing-card-svg {
+  display: none;
+}
+
+.landing-quote {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.75;
+  font-style: italic;
+  padding: 0 8px;
+  max-width: 320px;
+}
+
+/* ---------- Prediction Page — New Layout ---------- */
+#prediction-page {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 48px 28px 36px;
+  justify-content: flex-start;
+  gap: 0;
+}
+
+/* Large English title — Cormorant Garamond italic, left-aligned */
+.prediction-en-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.6rem, 11vw, 3.8rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--green-dark);
+  text-align: left;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  align-self: flex-start;
+  margin-bottom: 20px;
+  max-width: 320px;
+
+  /* Staggered entrance animation */
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.4,0,0.2,1) 0.05s,
+              transform 0.65s cubic-bezier(0.4,0,0.2,1) 0.05s;
+}
+
+#prediction-page.active .prediction-en-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Lotus botanical image — large, centered, drop shadow */
+.prediction-image-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+
+  opacity: 0;
+  transform: scale(0.94) translateY(20px);
+  transition: opacity 0.75s cubic-bezier(0.4,0,0.2,1) 0.15s,
+              transform 0.75s cubic-bezier(0.4,0,0.2,1) 0.15s;
+}
+
+#prediction-page.active .prediction-image-wrapper {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.prediction-image-wrapper img {
+  width: 100%;
+  max-width: 360px;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 40px rgba(0,0,0,0.20));
+}
+
+/* Thai lotus name — Cormorant Garamond, decorative center */
+.prediction-lotus-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.7rem, 6.5vw, 2.1rem);
+  font-weight: 600;
+  color: var(--green-dark);
+  text-align: center;
+  margin-bottom: 14px;
+  letter-spacing: 0.01em;
+
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1) 0.3s,
+              transform 0.6s cubic-bezier(0.4,0,0.2,1) 0.3s;
+}
+
+#prediction-page.active .prediction-lotus-name {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Description body copy */
+.prediction-description {
+  font-family: 'Sarabun', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.85;
+  margin-bottom: 32px;
+  max-width: 340px;
+
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1) 0.42s,
+              transform 0.6s cubic-bezier(0.4,0,0.2,1) 0.42s;
+}
+
+#prediction-page.active .prediction-description {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Buttons — border-radius: 4px global ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-btn);   /* 4px */
+  cursor: pointer;
+  font-family: 'Sarabun', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 14px 24px;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--green-btn);
+  color: var(--white);
+  width: 100%;
+  box-shadow: 0 2px 12px rgba(42,92,63,0.28);
+}
+
+.btn-primary:hover {
+  background: var(--green-dark);
+  box-shadow: 0 4px 20px rgba(42,92,63,0.38);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--green-btn);
+  border: 1.5px solid var(--green-btn);
+  flex: 1;
+}
+
+.btn-secondary:hover {
+  background: rgba(42,92,63,0.07);
+}
+
+.btn-save {
+  background: var(--green-btn);
+  color: var(--white);
+  flex: 1;
+  box-shadow: 0 2px 12px rgba(42,92,63,0.22);
+}
+
+.btn-save:hover {
+  background: var(--green-dark);
+  box-shadow: 0 4px 20px rgba(42,92,63,0.32);
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ---------- Button Row ---------- */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1) 0.54s,
+              transform 0.6s cubic-bezier(0.4,0,0.2,1) 0.54s;
+}
+
+#prediction-page.active .btn-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 390px) {
+  .prediction-en-title { font-size: 2.2rem; }
+  .btn { font-size: 0.9rem; padding: 13px 18px; }
+}
